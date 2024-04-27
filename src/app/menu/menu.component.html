@@ -1,0 +1,27 @@
+<div class="kion-logo"></div>
+<div class="instruction">
+  <div class="col settings">
+    <h2>Settings</h2>
+    <div *ngFor="let v of settings.variants">
+    <h2>{{ v.title }}</h2>
+    <div class="btn-row">
+      <a *ngFor="let b of $any(v.variants)" href="javascript:void 0" class="btn" [class.selected]="b.selected" [class.disabled]="b.disabled" (click)="settings.select(v, b)">{{ b.title }}</a>
+    </div>
+  </div>
+  <div>
+    <h2>Additional memory allocation:</h2>
+    <div class="btn-row">
+      <ng-container *ngFor="let s of alloc.memoryAllocVariants; let last=last">
+        <a href="javascript:void 0" class="btn" [class.selected]="alloc.alloc == s" (click)="alloc.setAlloc(s)">{{s}}x</a>
+      </ng-container>
+    </div>
+    </div>
+  </div>
+  <div class="col content">
+    <h2>Content</h2>
+    <a class="btn" *ngFor="let v of playbackUrls.urls; let i = index"
+    [autofocus]="i===playbackUrls.lastSelectedIndex"
+    (click)="playbackUrls.lastSelectedIndex=i"
+    [routerLink]="['player', i]" [queryParams]="settings.result">{{ v.title }}</a>
+  </div>
+</div>
