@@ -1,21 +1,31 @@
-# LG player demo
-Команды:
+# Player demo
+Useful Commands:
 
-`npm run build`. Сборка. Должен быть установлен [ares-cli](https://webostv.developer.lge.com/develop/tools/cli-installation).
+`npm run build`.
+`npm run start`.
 
-`npm run start`. Hot reload для разработки
+Be sure that you have .env file for valid build
 
-Должен быть .env файл с credentials для авторизации.
+You can write me in telegram for fast feedback @ifrolkin
 
+## Problem
 
-На данный момент не работает widevine, DEMO app показывает лаги при проигрывании MSE плееров на моделях LG < 6. 
-Для визуального отклика есть спиннер и возможность аллоцировать дополнительно в память.
+Channels with a large difference between the **Availability Start Time (AST)** and the current time are playing **without audio**.
 
-Подробнее о проблеме:
-https://forum.webostv.developer.lge.com/t/the-garbage-collector-runs-every-5-seconds-after-mediasource-is-attached-to-htmlvideoelement/2964
+---
 
-https://github.com/shaka-project/shaka-player/issues/4305
+There is a browser API called [`SourceBuffer`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer), which is used to feed media chunks into the browser.
 
-https://forum.webostv.developer.lge.com/t/stuttering-dash-drm-livestreaming-video-on-webos-3-x/6847
+One of its key properties is `timestampOffset`, which defines the offset applied to timestamps within media segments appended to the `SourceBuffer`.
 
-Для оперативной связи: telegram @ifrolkin
+In our case, the timestamps within the media chunks are always relative to the **Availability Start Time (AST)**. When `timestampOffset` is set, it shifts the effective timestamps seen by the playback engine.
+
+If the resulting playback time (after applying this offset) remains **less than 49 days**, audio plays back correctly. However, if this time exceeds 49 days, audio playback fails — even though video may continue.
+
+This discrepancy arises due to differences in how streaming specifications handle the notion of start time:
+
+- In **HLS**, the start time of a live stream is defined as the depth of the timeshift buffer, which keeps the playback time relatively close to the present moment.
+- In contrast, the **DASH** specification defines the start time of a live stream as the **Availability Start Time (AST)**, which can be far in the past for long-running streams.
+
+As a result, for long-lived DASH live streams, the derived playback time can be very large, triggering this audio playback issue in the browser.
+
