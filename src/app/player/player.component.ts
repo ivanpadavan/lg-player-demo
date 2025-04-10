@@ -204,14 +204,11 @@ export class PlayerComponent implements OnInit {
   }
 
   private async initPlayer() {
-    const players = {
-      webos: initWebos,
-      mse: initShaka,
-    };
-    const player = await players[this.settings.type](this.video);
+    const player = await initShaka(this.video);
     const drms = {
       playready: this.playbackInfo.playready ? { 'com.microsoft.playready': this.playbackInfo.playready } : undefined,
       widevine: this.playbackInfo.widevine ? { 'com.widevine.alpha': this.playbackInfo.widevine } : undefined,
+      nodrm: {},
     }
     return {
       load: () => player.load(this.playbackInfo.url, drms[this.settings.drm]),

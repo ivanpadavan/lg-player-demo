@@ -11,22 +11,19 @@ export class PlaybackUrls {
     wb.init({
       deviceModel: 'PC_Widevine_v3',
       token: '588d6bd0fc5c1f12a1dbb977f5961d14c9a182ae',
-      os: 'LG_WebOS',
+      os: 'SmartTV_Samsung',
       appVersion: '0.0.1',
       deviceId: physicalDeviceId,
       apiUrl: 'https://services.kion.ru/waterbase-staging'
     });
     await wb.fetchConfig(true);
     try {
-      const urlsString = wb.getValue('lg_demo_playback_urls');
+      const urlsString = wb.getValue('demo_playback_urls');
       if (typeof urlsString === 'string') {
         this.urls = JSON.parse(urlsString);
         this.urls.forEach((v) => {
           if (!v.mtsDrm) {
             return;
-          }
-          if (!v.playready) {
-            v.playready = this.auth.playready;
           }
           if (!v.widevine) {
             v.widevine = this.auth.widevine;
@@ -36,7 +33,6 @@ export class PlaybackUrls {
     } catch (e) {
       location.reload();
     }
-    console.log(this.urls);
   }
 
   lastSelectedIndex = 0;

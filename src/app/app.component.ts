@@ -7,10 +7,9 @@ import { BackHandler } from "./misc/back-handler";
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgForOf, ClockComponent],
+  imports: [RouterOutlet],
   template: `
     <router-outlet/>
-    <app-clock style="position: absolute; right: 3rem; top: 3rem"/>
   `,
   styles: [`
     :host {

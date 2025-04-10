@@ -5,7 +5,7 @@ import { HttpClient } from "@angular/common/http";
 declare const process: { env: any };
 
 export const physicalDeviceId = process.env.DEVICE_ID;
-const deviceModel = 'SmartTV_LG_Widevine';
+const deviceModel = 'SmartTV_Samsung_Widevine';
 const login = process.env.LOGIN;
 const password = process.env.PASSWORD;
 

@@ -36,20 +36,8 @@
       z-index: 999;
     }
 
-    &:not(:last-child) {
-      margin-right: 5rem;
-    }
-
-    &.settings {
-      .btn-row {
-        display: flex;
-        > .btn {
-          flex: 1;
-          &:not(:last-child) {
-            margin-right: 1rem;
-          }
-        }
-      }
+    a:not(:last-child) {
+      margin-bottom: 1rem;
     }
   }
 }
